@@ -31,23 +31,23 @@ namespace XamarinJson.Models {
 
         public ObservableCollection<Person> Persons { get; set; }
 
-        public void CleateCategory() {
+        public void AddPerson() {
             Persons.Add(new Person() { Name = "人物" });
         }
 
-        public void UpCategory(Person person) {
+        public void UpPerson(Person person) {
             var item = Persons.Select((model, index) => (model, index)).First(x => x.model == person);
             if (item.index == 0) return;
             Persons.Move(item.index, item.index - 1);
         }
 
-        public void DownCategory(Person person) {
+        public void DownPerson(Person person) {
             var item = Persons.Select((model, index) => (model, index)).First(x => x.model == person);
             if (item.index == Persons.Count - 1) return;
             Persons.Move(item.index, item.index + 1);
         }
 
-        public void DeleteCagegory(Person person) {
+        public void DeletePerson(Person person) {
             if (Persons.Count == 1) return;
             Persons.Remove(person);
         }
@@ -55,33 +55,33 @@ namespace XamarinJson.Models {
 
     public class CoreModel : BindableBase {
 
-        private readonly string _fileName = "XamarinJsonTest.json";
+        private readonly string _fileName = "XamarinJsonTest";
 
-        public ObservableCollection<Category> Categorys { get; set; }
+        public ObservableCollection<Category> Categorys { get; set; } = new ObservableCollection<Category>();
 
-        public void Save() {
-            var fileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), _fileName);
+        public void Save(string jsonFileName) {
+            var fileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), $"{jsonFileName}.json");
             var options = new JsonSerializerOptions {
                 Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
                 WriteIndented = true
             };
-            var json = JsonSerializer.Serialize(Categorys, options);
+            var json = JsonSerializer.Serialize(this, options);
             File.WriteAllText(fileName, json);
         }
 
-        public void Load() {
-            Categorys = new ObservableCollection<Category>();
-            var fileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), _fileName);
+        public void Load(string jsonFileName) {
+            Categorys.Clear();
+            var fileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), $"{jsonFileName}.json");
             if (!File.Exists(fileName)) {
-                CleateCategory();
+                AddCategory();
                 return;
             }
             var json = File.ReadAllText(fileName);
             var coreModel = JsonSerializer.Deserialize<CoreModel>(json);
-            Categorys = coreModel.Categorys;
+            foreach (var x in coreModel.Categorys) { Categorys.Add(x); }
         }
 
-        public void CleateCategory() {
+        public void AddCategory() {
             Categorys.Add(new Category() {
                 Name = "カテゴリ",
                 Persons = new ObservableCollection<Person>() {
@@ -107,8 +107,9 @@ namespace XamarinJson.Models {
             Categorys.Remove(category);
         }
 
-        public void CleateSample() {
-            Categorys = Aveter2ten0();
+        public void CreateSample() {
+            Categorys.Clear();
+            foreach(var x in Aveter2ten0()) { Categorys.Add(x); }
         }
 
         private static ObservableCollection<Category> Aveter2ten0() =>
