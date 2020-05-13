@@ -3,17 +3,13 @@ using Prism.Mvvm;
 using Prism.Navigation;
 using System;
 using System.Collections.Generic;
+using System.Reactive.Disposables;
 using System.Text;
 
 namespace XamarinJson.ViewModels {
     public class ViewModelBase : BindableBase, IInitialize, INavigationAware, IDestructible {
         protected INavigationService NavigationService { get; private set; }
-
-        private string _title;
-        public string Title {
-            get { return _title; }
-            set { SetProperty(ref _title, value); }
-        }
+        protected CompositeDisposable Disposable { get; } = new CompositeDisposable();
 
         public ViewModelBase(INavigationService navigationService) {
             NavigationService = navigationService;
@@ -31,8 +27,6 @@ namespace XamarinJson.ViewModels {
 
         }
 
-        public virtual void Destroy() {
-
-        }
+        public virtual void Destroy() => this.Disposable.Dispose();
     }
 }

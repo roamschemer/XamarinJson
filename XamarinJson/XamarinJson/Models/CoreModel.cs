@@ -31,6 +31,26 @@ namespace XamarinJson.Models {
 
         public ObservableCollection<Person> Persons { get; set; }
 
+        public void CleateCategory() {
+            Persons.Add(new Person() { Name = "人物" });
+        }
+
+        public void UpCategory(Person person) {
+            var item = Persons.Select((model, index) => (model, index)).First(x => x.model == person);
+            if (item.index == 0) return;
+            Persons.Move(item.index, item.index - 1);
+        }
+
+        public void DownCategory(Person person) {
+            var item = Persons.Select((model, index) => (model, index)).First(x => x.model == person);
+            if (item.index == Persons.Count - 1) return;
+            Persons.Move(item.index, item.index + 1);
+        }
+
+        public void DeleteCagegory(Person person) {
+            if (Persons.Count == 1) return;
+            Persons.Remove(person);
+        }
     }
 
     public class CoreModel : BindableBase {
@@ -62,11 +82,11 @@ namespace XamarinJson.Models {
         }
 
         public void CleateCategory() {
-            Categorys.Add(new Category() { 
-                Name = "カテゴリ", 
+            Categorys.Add(new Category() {
+                Name = "カテゴリ",
                 Persons = new ObservableCollection<Person>() {
-                    new Person() { Name = "人物" } 
-                } 
+                    new Person() { Name = "人物" }
+                }
             });
         }
 
