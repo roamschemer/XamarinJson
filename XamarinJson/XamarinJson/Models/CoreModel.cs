@@ -55,8 +55,6 @@ namespace XamarinJson.Models {
 
     public class CoreModel : BindableBase {
 
-        private readonly string _fileName = "XamarinJsonTest";
-
         public ObservableCollection<Category> Categorys { get; set; } = new ObservableCollection<Category>();
 
         public void Save(string jsonFileName) {
