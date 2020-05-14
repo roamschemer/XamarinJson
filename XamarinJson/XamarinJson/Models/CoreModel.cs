@@ -70,6 +70,7 @@ namespace XamarinJson.Models {
         }
 
         public void Load(string jsonFileName) {
+            foreach (var x in Categorys) { x.Persons.Clear(); };
             Categorys.Clear();
             var fileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), $"{jsonFileName}.json");
             if (!File.Exists(fileName)) {
