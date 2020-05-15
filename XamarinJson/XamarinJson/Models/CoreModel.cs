@@ -51,6 +51,8 @@ namespace XamarinJson.Models {
             if (Persons.Count == 1) return;
             Persons.Remove(person);
         }
+
+        public void Clear() => Persons.Clear();
     }
 
     public class CoreModel : BindableBase {
@@ -110,6 +112,8 @@ namespace XamarinJson.Models {
             Categorys.Clear();
             foreach(var x in Aveter2ten0()) { Categorys.Add(x); }
         }
+
+        public void Clear() => Categorys.Clear();
 
         private static ObservableCollection<Category> Aveter2ten0() =>
             new ObservableCollection<Category>(){
