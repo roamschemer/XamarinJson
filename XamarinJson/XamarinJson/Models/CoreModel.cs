@@ -55,6 +55,32 @@ namespace XamarinJson.Models {
         public void Clear() => Persons.Clear();
     }
 
+    //コンストラクタの記述がないのでOK
+    public class TestClass1 {
+        public string Name { get; set; }
+    }
+
+    //パラメータなしのコンストラクタがないのでNG
+    public class TestClass2 {
+        public string Name { get; set; }
+
+        public TestClass2(string name) {
+            Name = name;
+        }
+    }
+
+    //パラメータなしのコンストラクタ(オーバーロード)があるのでOK
+    public class TestClass3 {
+        public string Name { get; set; }
+
+        public TestClass3() {
+        }
+
+        public TestClass3(string name) {
+            Name = name;
+        }
+    }
+
     public class CoreModel : BindableBase {
 
         public ObservableCollection<Category> Categorys { get; set; } = new ObservableCollection<Category>();
