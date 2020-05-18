@@ -60,25 +60,34 @@ namespace XamarinJson.Models {
         public ObservableCollection<Category> Categorys { get; set; } = new ObservableCollection<Category>();
 
         public void Save(string jsonFileName) {
+            //ファイルパスを取得する。各プラットフォーム対応。
             var fileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), $"{jsonFileName}.json");
+            //オプションを指定する
             var options = new JsonSerializerOptions {
-                Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
-                WriteIndented = true
+                Encoder = JavaScriptEncoder.Create(UnicodeRanges.All), //日本語もいけるようにする
+                WriteIndented = true //良い感じに改行してくれるようにする
             };
+            //thisをjson文字列にシリアライズする
             var json = JsonSerializer.Serialize(this, options);
+            //文字列を保存する
             File.WriteAllText(fileName, json);
         }
 
         public void Load(string jsonFileName) {
-            foreach (var x in Categorys) { x.Persons.Clear(); };
+            //一旦消しておく
             Categorys.Clear();
+            //ファイルパスを取得する。各プラットフォーム対応。
             var fileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), $"{jsonFileName}.json");
+            //ファイルが無ければサンプルを生成する
             if (!File.Exists(fileName)) {
-                AddCategory();
+                CreateSample();
                 return;
             }
+            //Jsonファイルを文字列として読み込む
             var json = File.ReadAllText(fileName);
+            //Json文字列を逆シリアライズ
             var coreModel = JsonSerializer.Deserialize<CoreModel>(json);
+            //読み込んだmodelに置き換える
             foreach (var x in coreModel.Categorys) { Categorys.Add(x); }
         }
 

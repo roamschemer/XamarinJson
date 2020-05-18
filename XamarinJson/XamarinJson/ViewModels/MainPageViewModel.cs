@@ -22,10 +22,10 @@ namespace XamarinJson.ViewModels {
         public MainPageViewModel(INavigationService navigationService, CoreModel coreModel) : base(navigationService) {
             coreModel.Load("XamarinJson1");
             CategoryViewModels = coreModel.Categorys.ToReadOnlyReactiveCollection(x => new CategoryViewModel(coreModel, x)).AddTo(this.Disposable);
-            SelectedCategoryViewModel = new ReactiveProperty<CategoryViewModel>(CategoryViewModels.First());
-            LoadCommand = new ReactiveCommand<string>().WithSubscribe(x => coreModel.Load(x));
-            SaveCommand = new ReactiveCommand<string>().WithSubscribe(x => coreModel.Save(x));
-            SampleSetCommand = new ReactiveCommand().WithSubscribe(_ => coreModel.CreateSample());
+            SelectedCategoryViewModel = new ReactiveProperty<CategoryViewModel>(CategoryViewModels.FirstOrDefault());
+            LoadCommand = new ReactiveCommand<string>().WithSubscribe(x => { coreModel.Load(x); SelectedCategoryViewModel.Value = null; });
+            SaveCommand = new ReactiveCommand<string>().WithSubscribe(x => { coreModel.Save(x); });
+            SampleSetCommand = new ReactiveCommand().WithSubscribe(_ => { coreModel.CreateSample(); SelectedCategoryViewModel.Value = null; });
             AddCommand = new ReactiveCommand().WithSubscribe(_ => coreModel.AddCategory());
             ClearCommand = new ReactiveCommand().WithSubscribe(_ => { coreModel.Clear(); SelectedCategoryViewModel.Value = null; });
         }

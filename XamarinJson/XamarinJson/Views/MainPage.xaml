@@ -42,6 +42,7 @@
                     <ColumnDefinition Width="40" />
                     <ColumnDefinition Width="40" />
                     <ColumnDefinition Width="20" />
+                    <ColumnDefinition Width="12" />
                   </Grid.ColumnDefinitions>
                   <Entry Grid.Column="0" Text="{Binding Name.Value}" />
                   <Button Grid.Column="1" Text="↑" Command="{Binding UpCommand}"/>
@@ -71,6 +72,7 @@
                     <ColumnDefinition Width="40" />
                     <ColumnDefinition Width="40" />
                     <ColumnDefinition Width="20" />
+                    <ColumnDefinition Width="12" />
                   </Grid.ColumnDefinitions>
                   <Entry Grid.Column="0" Text="{Binding Name.Value}" />
                   <Button Grid.Column="1" Text="↑" Command="{Binding UpCommand}"/>
